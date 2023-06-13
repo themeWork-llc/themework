@@ -5,10 +5,8 @@ import EditorContainer from './EditorContainer'
 export default function Page () {
 
   const [loggedIn, setIsLoggedIn] = useState(false)
-
-  const handleLogin = () => {
-    setIsLoggedIn((current) => !current)
-  }
+  const handleLogin = () => setIsLoggedIn((current) => !current)
+  
 
   return (
     <body>
@@ -16,9 +14,10 @@ export default function Page () {
     <section>
       <div>{loggedIn ? <>logged in!</> : <>logged out</>}</div>
       - - - - - - - - - - -
-      <Login setIsLoggedIn={setIsLoggedIn} />
-      <button onClick={handleLogin}>sign in</button>
-      <EditorContainer />
+      {!loggedIn?
+      <Login handleLogin={handleLogin} /> :
+      <EditorContainer handleLogin={handleLogin}/>
+      }
     </section>
     </body>
   )

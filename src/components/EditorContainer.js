@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function EditorContainer () {
+export default function EditorContainer (props) {
   return (
-    <main>editor container</main>
+    <main> - - - - editor container - - - - - 
+      <button onClick={props.handleLogin}>sign out</button>
+      - - - - - -
+    </main>
   )
 }

@@ -3,11 +3,16 @@ const http = require('http')
 const path = require('path')
 const { Server } = require('socket.io')
 const { Socket } = require('socket.io-client')
+const mongoose = require ('mongoose');
+require('dotenv').config()
 
 
 const app = express()
 
 const server = http.createServer(app)
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log('Connected to Mongo DB.'))
+.catch((err) => console.log(err));
 const PORT = 3000
 
 app.get('/', (req,res) => {

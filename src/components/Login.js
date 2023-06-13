@@ -1,7 +1,9 @@
 import React from 'react'
 
-export default function Login () {
+export default function Login (props) {
   return (
-    <main>login div</main>
+    <main>
+      login div
+      </main>
   )
 }

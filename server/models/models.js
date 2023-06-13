@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const roomSchema = new Schema({
   roomName: { type: String, unique: true, required: true }, 
   password: { type: String, required: true },
-  text: String,
+  documentText: String,
   createdAt: { type: Date, default: Date.now },
   lastModified: { type: Date, default: Date.now }
 })

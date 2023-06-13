@@ -10,6 +10,7 @@ export default function EditorContainer (props) {
     e.preventDefault()
       // logic for submit re-render of text box
     // make PATCH req to db
+    // console.log(currentText)
   }
 
   return (

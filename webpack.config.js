@@ -10,11 +10,15 @@ module.exports = {
   },
   target: 'web',
   devServer: {
+    open: true,
     port: '8080',
+    host: 'localhost',
+    proxy: {
+      '/': 'http://localhost:3000'
+    },
     static: {
       directory: path.join(__dirname, 'public')
     },
-    open: true,
     hot: true,
     liveReload: true
   },

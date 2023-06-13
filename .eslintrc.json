@@ -1,23 +1,32 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest/globals": true
     },
     "extends": [
         "plugin:react/recommended",
-        "standard"
-    ],
-    "overrides": [
+        "plugin:jest/recommended",
+        "airbnb",
+        "prettier"
     ],
     "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": [
-        "react"
-    ],
+    "plugins": ["react", "jest"],
     "rules": {
-        // "quotes":"off"
-        "semi": ["error", "always"]
+        "no-underscore-dangle": 0,
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "always",
+                "jsx": "always"
+            }
+        ]
     }
 }

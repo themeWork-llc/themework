@@ -12,6 +12,8 @@ export default function Page () {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [fooEvents, setFooEvents] = useState([]);
 
+  const [createButtonPress, setCreateButtonPress] = useState(false)
+  const [createJoinPress, setCreateJoinPress] = useState(false)
   const [loggedIn, setIsLoggedIn] = useState(false)
   const [text, setText] = useState("")
   const [password, setPassword] = useState("")
@@ -24,6 +26,10 @@ export default function Page () {
 
     function onDisconnect() {
       setIsConnected(false);
+      // if we are disconnecting our last connection there will be no way to save the current text 
+      // data to our db
+      //
+      // setInterval? or just every time the data is manipulated
     }
 
     function onFooEvent(value) {

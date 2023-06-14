@@ -1,22 +1,30 @@
 const express = require('express')
 const http = require('http')
-const path = require('path')
 const { Server } = require('socket.io')
-const { Socket } = require('socket.io-client')
-
 
 const app = express()
 
+//create server
 const server = http.createServer(app)
+
 const PORT = 3000
 
 //on initial load send the html/react page
-app.get('/', (req,res) => {
-    res.sendFile(path.join(__dirname, '/index.html'))
-})
 
 //sets up a socket.io connection
 const io = new Server(server)
+
+//declare a function that generates a random password of 8 letters and returns it
+const autoGenerate = () => {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    let randomString = '';
+    for (let i = 0; i < 8; i++) {
+      const randomIndex = Math.floor(Math.random() * letters.length);
+      const randomLetter = letters.charAt(randomIndex);
+      randomString += randomLetter;
+    }
+    return randomString;
+  }
 
 //object which stores names of rooms and passwords for authentication
 const roomPasswords = {}
@@ -25,17 +33,29 @@ const roomPasswords = {}
 io.on('connection', client => {
     console.log('a user connected');
     //when a client creates a room store room name and password in object
-    io.on('create room', () => {
-        roomPasswords[room] = {password, doc:''}
-        console.log('room has been created');
+    client.on('create room', () => {
+        //generate random password
+        let randomPassword = autoGenerate();
+        //store random password in object
+        roomPasswords.randomPassword = '';
+        console.log(`room has been created with password: ${randomPassword}`);
+        //send text 
+        client.emit('get text', roomPasswords.randomPassword)
     })
+    
     //when a client joins a room
-    client.on('join room', (room, password) => {
-        if(roomPasswords[room] && roomPasswords.room.password === password){
-            client.join(room);
-            console.log(`User joined room: ${room}`);
+    client.on('join room', (obj) => {
+        const key = obj.password
+        //check if room password exists in the object
+        if(roomPasswords[key]){
+            //client joins room
+            client.join(key);
+            console.log(`User joined room: ${key}`);
+            //send text
+            client.emit('document', roomPasswords[key])
+        //if password cannot be found
         } else {
-            Socket.emit('error joining room. try again')
+            client.emit('error', 'Could not find room')
         }
     })
     
@@ -47,7 +67,7 @@ io.on('connection', client => {
         client.to(room).emit(changeData)
     })
     //on disconnect
-    client.on('disconnect', () => {
+    io.on('disconnect', () => {
         console.log('disconnect');
     });
 });

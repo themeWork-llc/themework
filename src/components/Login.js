@@ -8,19 +8,11 @@ export default function Login (props) {
   
 
   return (
-    /*
-    3 senarios
-    create room
-    no id, no pw
-    join room
-    id, no pw
-    live room
-    id and pw
-    */
+    
 
     <main>
       <div>
-        {!props.room.id && !props.room.pw ? <Create />}
+        
         
       </div>
       - - - - login - - - 

@@ -77,24 +77,24 @@ io.on('connection', client => {
         roomPasswords[randomPassword] = '';
         console.log(`room has been created with password: ${randomPassword}`);
         //send text 
-        client.emit('get text', randomPassword)
+        client.emit('get password', randomPassword)
     })
     
     //when a client joins a room
     client.on('join room', (password) => {
         
-        console.log("first console JOSDFDSFDSF")
-        console.log('PASSWORD:', password)
-        console.log('rmpw:', roomPasswords)
+        console.log("in join room on server")
+        console.log('PASSWORD in server:', password)
+        console.log('object on server:', roomPasswords)
         
         //check if room password exists in the object
         if(password in roomPasswords){
-            console.log("second console JOSDFDSFDSF")
+            console.log("object found!")
             //client joins room
             client.join(password);
             console.log(`User joined room: ${password}`);
             //send text
-            client.emit('document',password, roomPasswords[password])
+            client.emit('document', password, roomPasswords[password])
         //if password cannot be found
         } else {
             client.emit('error', 'Could not find room')
@@ -106,8 +106,13 @@ io.on('connection', client => {
     //changeData will hold the enitre document with new changes
     client.on('document change', (password, updatedText) => {
         //store new data to object with that room key
+        console.log('in document change on server ')
+        console.log('password:',  password)
+        console.log('updated text', updatedText)
+        console.log('object in server before getting new text', roomPasswords)
         roomPasswords[password] = updatedText
-        client.to(password).emit(updatedText)
+        console.log('object in server after getting new text', roomPasswords)
+        io.in(password).emit('get updates', updatedText)
     })
     //on disconnect
     io.on('disconnect', () => {

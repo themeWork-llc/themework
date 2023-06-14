@@ -51,18 +51,18 @@ export default function EditorContainer(props) {
 
   const handleCursor = (e) => {
     setCursorPosition(e.target.selectionStart);
-    console.log('cursor position', cursorPosition)
+    //console.log('cursor position', cursorPosition)
   };
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.handleText(props.text)
+    props.handleText()
   }
 
   return (
     <Main>
       <Button onClick={props.handleLogin}>sign out</Button>
-      <Form autocomplete="off">
+      <Form autocomplete="off" onSubmit={handleSubmit}>
         <Input
           name="userInput"
           id="xyz123"
@@ -70,19 +70,19 @@ export default function EditorContainer(props) {
           // for now we should focus on using save btn rather than
           // resetting state in a component
 
-          // onChange={(e) => {
-          //   props.setText(e.target.value);
-          //   console.log(props.text)
-          //   handleCursor(e);
-          // }}
-          // onClick={handleCursor}
-          // onKeyDown={handleCursor}
+          onChange={(e) => {
+            props.setText(e.target.value);
+            console.log('this is text from state in on change:', props.text)
+            handleCursor(e);
+          }}
+          onClick={handleCursor}
+          onKeyDown={handleCursor}
           defaultValue={props.text}
           type="text"
           placeholder="say hello..."
           autocomplete="xyz123"
         ></Input>
-        <Button type="submit" onClick={handleSubmit}>
+        <Button type="submit">
           save
         </Button>
       </Form>

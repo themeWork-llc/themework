@@ -4,13 +4,13 @@ export default function EditorContainer (props) {
   
   // logic for first render of text box
   
-  const [currentText, setCurrentText] = useState('')
+  const [text, setText] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
       // logic for submit re-render of text box
     // make PATCH req to db
-    // console.log(currentText)
+    // console.log(text)
   }
 
   return (
@@ -18,7 +18,7 @@ export default function EditorContainer (props) {
       <button onClick={props.handleLogin}>sign out</button>
       <form>
         {/* input field */}
-        <input name='userInput' onChange={(e) => setCurrentText(e.target.value)} defaultValue={currentText} type='text'placeholder='say hello...'></input>
+        <input name='userInput' onChange={(e) => setText(e.target.value)} defaultValue={text} type='text'placeholder='say hello...'></input>
         {/* submit button */}
         <div>
         <button type="submit" onClick={handleSubmit}>submit</button>

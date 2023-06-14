@@ -17,24 +17,40 @@ export default function Page () {
   const [loggedIn, setIsLoggedIn] = useState(false)
   const [text, setText] = useState("")
   const [password, setPassword] = useState("")
-  const handleLogin = () => setIsLoggedIn((current) => !current)
+  const handleLogin = () => {
+   
+    socket.emit('join room', 'randomPassword');
+    
+    socket.on('document', (...data) => {
+      console.log("Document:", data)
+    })
+
+
+    setIsLoggedIn((current) => !current)
+  }
   
+  console.log(socket)
+
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
-    }
 
+      socket.emit('create room');
+    
+      socket.on('get text', (...data) => {
+        console.log("DATA:", data)
+      })
+    
+  }
     function onDisconnect() {
       setIsConnected(false);
-      // if we are disconnecting our last connection there will be no way to save the current text 
-      // data to our db
-      //
-      // setInterval? or just every time the data is manipulated
     }
 
     function onFooEvent(value) {
       setFooEvents(previous => [...previous, value]);
     }
+
+    socket.onmessage
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);

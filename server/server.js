@@ -3,15 +3,23 @@ const http = require('http')
 const path = require('path')
 const { Server } = require('socket.io')
 const { Socket } = require('socket.io-client')
-const cors = require('cors');
+
 
 const app = express()
-app.use(cors())
 
 const server = http.createServer(app)
 const PORT = 3000
 
 //on initial load send the html/react page
+
+// need CORS for connection
+const cors = require('cors');
+app.use(cors())
+
+// NOTE: for this link to work, I think it would have to be a static file - Hank
+app.get('/', (req,res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'))
+})
 
 //sets up a socket.io connection
 const io = new Server(server)

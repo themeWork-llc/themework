@@ -5,8 +5,6 @@ import EditorContainer from './EditorContainer'
 import { socket } from '../socket';
 import { ConnectionState } from './ConnectionState';
 import { ConnectionManager } from './ConnectionManager';
-import { Events } from './Events';
-import { MyForm } from './MyForm';
 
 export default function Page () {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -65,11 +63,8 @@ export default function Page () {
 
   return (
     <section>
-
       <ConnectionState isConnected={ isConnected } />
-      <Events events={ fooEvents } />
       <ConnectionManager />
-      <MyForm />
 
 
       <div>{loggedIn ? <div className='bg-green-200'>currently in a room!</div> : <div className='bg-red-200'>not in room</div>}</div>

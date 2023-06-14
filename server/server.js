@@ -38,7 +38,7 @@ io.on('connection', client => {
         }
     })
     
-    //listnens for changes in the document and broadcasts them to all clients in the room
+    //listens for changes in the document and broadcasts them to all clients in the room
     client.on('document change', (room, changeData) => {
         client.to(room).broadcast.emit(changeData)
     })

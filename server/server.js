@@ -85,7 +85,6 @@ io.on('connection', client => {
         
         console.log("first console JOSDFDSFDSF")
         console.log('PASSWORD:', password)
-
         console.log('rmpw:', roomPasswords)
         
         //check if room password exists in the object

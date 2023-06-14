@@ -12,42 +12,39 @@ export default function Page () {
   const [createJoinPress, setCreateJoinPress] = useState(false)
   const [loggedIn, setIsLoggedIn] = useState(false)
   const [text, setText] = useState("")
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState("randomPassword")
 
   const handleJoin = () => {
-
-    // if creating room:
-    
-    // if joining existing room:
-
-
-    socket.emit('join room', password);
-    socket.on('document', (...data) => {
-      console.log("Document:", data[1])
-    })
+    // regardless of if creating or joining room, now logged in/out:
     setIsLoggedIn((current) => !current)
 
+    // if creating room:
+    socket.emit('create room')
 
+    socket.on('document', (...data) => {
+      console.log("get text", data)
+    })
+
+    // if joining existing room:
+    socket.emit('join room', password);
+
+    socket.on('document', (...data) => {
+      console.log("Document:", data)
+    })
+
+    // re-render page w/ text editor either way
   }
 
   useEffect(() => {
     function onConnect() {
-      setIsConnected(true);
-
-      socket.emit('create room');
-    
-      socket.on('get text', (...data) => {
-        console.log("DATA:", data)
-      })
-    
-  }
+      setIsConnected(true);    
+    }
     function onDisconnect() {
       setIsConnected(false);
     }
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);

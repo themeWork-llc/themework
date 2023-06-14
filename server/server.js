@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log('Connected to Mongo DB.'))
 .catch((err) => console.log(err));
 
+//on initial load send the html/react page
 app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, '/index.html'))
 })
@@ -41,15 +42,15 @@ const roomPasswords = {}
 
 //whenever a new client connects to the server...
 io.on('connection', client => {
-    console.log('a user connected')
+    console.log('a user connected');
     //when a client creates a room store room name and password in object
-    io.on('create room', (room, password) => {
-        roomPasswords[room] = password;
+    io.on('create room', () => {
+        roomPasswords[room] = {password, doc:''}
         console.log('room has been created');
     })
     //when a client joins a room
     client.on('join room', (room, password) => {
-        if(roomPasswords[room] === password){
+        if(roomPasswords[room] && roomPasswords.room.password === password){
             client.join(room);
             console.log(`User joined room: ${room}`);
         } else {
@@ -58,8 +59,11 @@ io.on('connection', client => {
     })
     
     //listnens for changes in the document and broadcasts them to all clients in the room
+    //changeData will hold the enitre document with new changes
     client.on('document change', (room, changeData) => {
-        client.to(room).broadcast.emit(changeData)
+        //store new data to object with that room key
+        roomPasswords[room].doc = changeData
+        client.to(room).emit(changeData)
     })
     //on disconnect
     client.on('disconnect', () => {

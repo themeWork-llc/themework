@@ -1,6 +1,12 @@
 const express = require('express')
 const http = require('http')
 const { Server } = require('socket.io')
+const { Socket } = require('socket.io-client')
+const mongoose = require ('mongoose');
+require('dotenv').config()
+const { Room } = require('./models/models.js')
+
+
 const cors = require('cors');
 const app = express();
 
@@ -9,6 +15,12 @@ const server = http.createServer(app)
 
 const PORT = 3000
 
+//connect to mongoDB 
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log('Connected to Mongo DB.'))
+.catch((err) => console.log(err));
+
+app.use(express.json())
 //on initial load send the html/react page
 
 // need CORS for connection
@@ -19,11 +31,30 @@ app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
+
+
+// test route to create a room in the database - sun jin
+// app.post('/rooms', async (req, res) => {
+//     try {
+//       const { password, text } = req.body;
+//       const room = new Room({ password, text });
+//       await room.save();
+//       res.status(201).json(room);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: 'Failed to create room' });
+//     }
+//   });
+
+
 //sets up a socket.io connection
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000',
-    }
+        origin: "http://localhost:8080",
+        methods: ["GET", "POST"],
+        allowedHeaders: ["my-custom-header"],
+        credentials: true
+      }
 });
 
 //declare a function that generates a random password of 8 letters and returns it

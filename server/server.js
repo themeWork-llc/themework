@@ -5,7 +5,7 @@ const { Server } = require('socket.io')
 const { Socket } = require('socket.io-client')
 const mongoose = require ('mongoose');
 require('dotenv').config()
-const Room = require('./models/models.js')
+const { Room } = require('./models/models.js')
 
 
 const app = express()
@@ -16,22 +16,26 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log('Connected to Mongo DB.'))
 .catch((err) => console.log(err));
 
+app.use(express.json())
 //on initial load send the html/react page
 app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, '/index.html'))
 })
 
-app.post('/rooms', async (req, res) => {
-    try {
-      const { roomName, password, text } = req.body;
-      const room = new Room({ roomName, password, text });
-      await room.save();
-      res.status(201).json(room);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to create room' });
-    }
-  });
+
+
+// test route to create a room in the database - sun jin
+// app.post('/rooms', async (req, res) => {
+//     try {
+//       const { password, text } = req.body;
+//       const room = new Room({ password, text });
+//       await room.save();
+//       res.status(201).json(room);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: 'Failed to create room' });
+//     }
+//   });
 
 
 //sets up a socket.io connection

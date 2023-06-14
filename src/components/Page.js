@@ -8,26 +8,27 @@ import { ConnectionManager } from './ConnectionManager';
 
 export default function Page () {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [fooEvents, setFooEvents] = useState([]);
-
   const [createButtonPress, setCreateButtonPress] = useState(false)
   const [createJoinPress, setCreateJoinPress] = useState(false)
   const [loggedIn, setIsLoggedIn] = useState(false)
   const [text, setText] = useState("")
   const [password, setPassword] = useState("")
-  const handleLogin = () => {
-   
-    socket.emit('join room', 'randomPassword');
+
+  const handleJoin = () => {
+
+    // if creating room:
     
+    // if joining existing room:
+
+
+    socket.emit('join room', password);
     socket.on('document', (...data) => {
-      console.log("Document:", data)
+      console.log("Document:", data[1])
     })
-
-
     setIsLoggedIn((current) => !current)
+
+
   }
-  
-  console.log(socket)
 
   useEffect(() => {
     function onConnect() {
@@ -44,20 +45,12 @@ export default function Page () {
       setIsConnected(false);
     }
 
-    function onFooEvent(value) {
-      setFooEvents(previous => [...previous, value]);
-    }
-
-    socket.onmessage
-
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-    socket.on('foo', onFooEvent);
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
-      socket.off('foo', onFooEvent);
     };
   }, []);
 
@@ -65,11 +58,9 @@ export default function Page () {
     <section>
       <ConnectionState isConnected={ isConnected } />
       <ConnectionManager />
-
-
       <div>{loggedIn ? <div className='bg-green-200'>currently in a room!</div> : <div className='bg-red-200'>not in room</div>}</div>
-      { !loggedIn? <Login handleLogin={handleLogin} text={text} password={password}/> : 
-      <EditorContainer text={text} setText={setText} password={password} setPassword={setPassword} handleLogin={handleLogin}/> }
+      { !loggedIn? <Login handleJoin={handleJoin} password={password}/> : 
+      <EditorContainer text={text} setText={setText} password={password} setPassword={setPassword} handleJoin={handleJoin}/> }
     </section>
   )
 }

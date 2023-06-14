@@ -11,11 +11,11 @@ export default function EditorContainer (props) {
 
   return (
     <main>
-      <button onClick={props.handleLogin}>sign out</button>
+      <button onClick={props.handleJoin}>leave</button>
       <form>
         <input name='userInput' onChange={(e) => props.setText(e.target.value)} defaultValue={props.text} type='text'placeholder='say hello...'></input>
         <div>
-        <button type="submit" onClick={handleSubmit}>submit</button>
+        <button type="submit" onClick={handleSubmit}>save</button>
         </div>
       </form>
     </main>

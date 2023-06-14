@@ -8,6 +8,8 @@ export default function Page () {
   const [password, setPassword] = useState("")
   const handleLogin = () => setIsLoggedIn((current) => !current)
   
+  
+
   return (
     <section>
       <div>{loggedIn ? <div className='bg-green-200'>currently in a room!</div> : <div className='bg-red-200'>not in room</div>}</div>

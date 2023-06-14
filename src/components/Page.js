@@ -19,6 +19,8 @@ export default function Page () {
   const [password, setPassword] = useState("")
   const handleLogin = () => setIsLoggedIn((current) => !current)
   
+  
+
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);

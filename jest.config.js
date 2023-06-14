@@ -3,5 +3,6 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{js,jsx}'],
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  "preset": "@shelf/jest-mongodb"
 }

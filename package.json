@@ -57,6 +57,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "css-loader": "^6.8.1",
+    "deep-equal": "^2.2.1",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "mongoose": "^7.2.4",

@@ -32,10 +32,16 @@ const Input = styled.input`
   border-radius: 3px;
   margin-bottom: 1em;
   width: 70%;
+  height: 100vh;
   box-sizing: border-box;
   background-color: #fafafa;
+  resize: none;
+  vertical-align: top;
   &:focus {
     outline: none;
+  }
+  &[autocomplete='off'] {
+    -webkit-appearance: none;
   }
 `;
 
@@ -49,6 +55,9 @@ export default function EditorContainer(props) {
     console.log('cursor position', cursorPosition)
   };
 
+  const handleChangeText = (e) => {
+
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     // logic for submit re-render of text box
@@ -60,11 +69,13 @@ export default function EditorContainer(props) {
   return (
     <Main>
       <Button onClick={props.handleLogin}>sign out</Button>
-      <Form>
+      <Form autocomplete="off">
         <Input
-          name="userInput"
+          name="xyz123"
+          id="xyz123"
           onChange={(e) => {
             props.setText(e.target.value);
+            console.log(props.text)
             handleCursor(e);
           }}
           onClick={handleCursor}
@@ -72,6 +83,7 @@ export default function EditorContainer(props) {
           defaultValue={props.text}
           type="text"
           placeholder="say hello..."
+          autocomplete="xyz123"
         ></Input>
         <Button type="submit" onClick={handleSubmit}>
           submit

@@ -72,22 +72,29 @@ io.on('connection', client => {
     client.on('create room', () => {
         //generate random password
         let randomPassword = autoGenerate();
+        // let randomPassword = 'randomPassword';
         //store random password in object
-        roomPasswords.randomPassword = '';
+        roomPasswords[randomPassword] = '';
         console.log(`room has been created with password: ${randomPassword}`);
-        //send password to user and text 
-        client.emit('get text', randomPassword, roomPasswords.randomPassword)
+        //send text 
+        client.emit('get text', randomPassword)
     })
     
-    //when a client joins a room, takes in password
+    //when a client joins a room
     client.on('join room', (password) => {
+        
+        console.log("first console JOSDFDSFDSF")
+        console.log('PASSWORD:', password)
+        console.log('rmpw:', roomPasswords)
+        
         //check if room password exists in the object
-        if(roomPasswords[password]){
+        if(password in roomPasswords){
+            console.log("second console JOSDFDSFDSF")
             //client joins room
             client.join(password);
-            console.log(`a client has joined room:${password}`)
-            //send password and text
-            client.emit('document', password, roomPasswords[password])
+            console.log(`User joined room: ${password}`);
+            //send text
+            client.emit('document',password, roomPasswords[password])
         //if password cannot be found
         } else {
             client.emit('error', 'Could not find room')

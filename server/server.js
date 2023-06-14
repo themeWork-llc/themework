@@ -3,17 +3,15 @@ const http = require('http')
 const path = require('path')
 const { Server } = require('socket.io')
 const { Socket } = require('socket.io-client')
-
+const cors = require('cors');
 
 const app = express()
+app.use(cors())
 
 const server = http.createServer(app)
 const PORT = 3000
 
 //on initial load send the html/react page
-app.get('/', (req,res) => {
-    res.sendFile(path.join(__dirname, '/index.html'))
-})
 
 //sets up a socket.io connection
 const io = new Server(server)

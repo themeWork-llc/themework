@@ -71,13 +71,13 @@ io.on('connection', client => {
     //when a client creates a room store room name and password in object
     client.on('create room', () => {
         //generate random password
-        // let randomPassword = autoGenerate();
-        let randomPassword = 'randomPassword';
+        let randomPassword = autoGenerate();
+        // let randomPassword = 'randomPassword';
         //store random password in object
         roomPasswords[randomPassword] = '';
         console.log(`room has been created with password: ${randomPassword}`);
         //send text 
-        client.emit('get text', randomPassword, roomPasswords.randomPassword)
+        client.emit('get text', randomPassword)
     })
     
     //when a client joins a room
@@ -103,10 +103,11 @@ io.on('connection', client => {
     
     //listens for changes in the document and broadcasts them to all clients in the room
     //changeData will hold the enitre document with new changes
-    client.on('document change', (password, changeData) => {
+    client.on('document change', (changeData) => {
         //store new data to object with that room key
-        roomPasswords[password].text = changeData
+        roomPasswords[password] = changeData
         client.to(password).emit(changeData)
+        console.log("ADDED TEXT:", changeData)
     })
     //on disconnect
     io.on('disconnect', () => {

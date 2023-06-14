@@ -4,9 +4,7 @@ export default function EditorContainer (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-      // logic for submit re-render of text box
-    // send props.text to back end
-    console.log('text:', props.text)
+    props.handleText(props.text)
   }
 
   return (

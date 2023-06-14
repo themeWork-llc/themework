@@ -6,7 +6,8 @@ module.exports = {
   mode: 'development',
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'index_bundle.js'
+    filename: 'index_bundle.js',
+    // paths are the problem
   },
   target: 'web',
   devServer: {
@@ -14,6 +15,7 @@ module.exports = {
     port: '8080',
     host: 'localhost',
     proxy: {
+          // paths are the problem
       '/': 'http://localhost:3000'
     },
     static: {

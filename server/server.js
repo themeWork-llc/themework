@@ -5,6 +5,8 @@ const { Socket } = require('socket.io-client')
 const mongoose = require ('mongoose');
 require('dotenv').config()
 const { Room } = require('./models/models.js')
+const path = require('path')
+const bodyParser = require('body-parser')
 
 
 const cors = require('cors');
@@ -23,15 +25,9 @@ mongoose.connect(process.env.MONGO_URI)
 app.use(express.json())
 //on initial load send the html/react page
 
+// app.use(bodyParser.json())
 // need CORS for connection
 app.use(cors());
-
-// NOTE: for this link to work, I think it would have to be a static file - Hank
-app.get('/', (req,res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'))
-})
-
-
 
 // test route to create a room in the database - sun jin
 // app.post('/rooms', async (req, res) => {
@@ -50,10 +46,7 @@ app.get('/', (req,res) => {
 //sets up a socket.io connection
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:8080",
-        methods: ["GET", "POST"],
-        allowedHeaders: ["my-custom-header"],
-        credentials: true
+        origin: "*"
       }
 });
 
@@ -83,7 +76,7 @@ io.on('connection', client => {
         roomPasswords.randomPassword = '';
         console.log(`room has been created with password: ${randomPassword}`);
         //send text 
-        client.emit('get text', roomPasswords.randomPassword)
+        client.emit('get text', randomPassword, roomPasswords.randomPassword)
     })
     
     //when a client joins a room
@@ -102,12 +95,12 @@ io.on('connection', client => {
         }
     })
     
-    //listnens for changes in the document and broadcasts them to all clients in the room
+    //listens for changes in the document and broadcasts them to all clients in the room
     //changeData will hold the enitre document with new changes
-    client.on('document change', (room, changeData) => {
+    client.on('document change', (password, changeData) => {
         //store new data to object with that room key
-        roomPasswords[room].doc = changeData
-        client.to(room).emit(changeData)
+        roomPasswords[password].text = changeData
+        client.to(password).emit(changeData)
     })
     //on disconnect
     io.on('disconnect', () => {

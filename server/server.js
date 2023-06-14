@@ -62,7 +62,7 @@ const autoGenerate = () => {
     return randomString;
   }
 
-//object which stores names of rooms and passwords for authentication
+//object which stores room_passwords and text documents
 const roomPasswords = {}
 
 //whenever a new client connects to the server...
@@ -75,36 +75,36 @@ io.on('connection', client => {
         //store random password in object
         roomPasswords.randomPassword = '';
         console.log(`room has been created with password: ${randomPassword}`);
-        //send text 
+        //send password to user and text 
         client.emit('get text', randomPassword, roomPasswords.randomPassword)
     })
     
-    //when a client joins a room
-    client.on('join room', (obj) => {
-        const key = obj.password
+    //when a client joins a room, takes in password
+    client.on('join room', (password) => {
         //check if room password exists in the object
-        if(roomPasswords[key]){
+        if(roomPasswords[password]){
             //client joins room
-            client.join(key);
-            console.log(`User joined room: ${key}`);
-            //send text
-            client.emit('document', roomPasswords[key])
+            client.join(password);
+            console.log(`a client has joined room:${password}`)
+            //send password and text
+            client.emit('document', password, roomPasswords[password])
         //if password cannot be found
         } else {
             client.emit('error', 'Could not find room')
+            console.log('room not found')
         }
     })
     
     //listens for changes in the document and broadcasts them to all clients in the room
     //changeData will hold the enitre document with new changes
-    client.on('document change', (password, changeData) => {
+    client.on('document change', (password, updatedText) => {
         //store new data to object with that room key
-        roomPasswords[password].text = changeData
-        client.to(password).emit(changeData)
+        roomPasswords[password] = updatedText
+        client.to(password).emit(updatedText)
     })
     //on disconnect
     io.on('disconnect', () => {
-        console.log('disconnect');
+        console.log('a user disconnected');
     });
 });
 

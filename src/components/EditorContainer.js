@@ -28,11 +28,11 @@ const Form = styled.form`
 const Input = styled.input`
   font-size: 1em;
   padding: 0.5em;
-  border: none;
+  border: 3px solid black;
   border-radius: 3px;
   margin-bottom: 1em;
   width: 70%;
-  height: 100vh;
+  height: 60vh;
   box-sizing: border-box;
   background-color: #fafafa;
   resize: none;
@@ -45,48 +45,45 @@ const Input = styled.input`
   }
 `;
 
-
 export default function EditorContainer(props) {
 
   const [cursorPosition, setCursorPosition] = useState(null);
 
   const handleCursor = (e) => {
     setCursorPosition(e.target.selectionStart);
-    console.log('cursor position', cursorPosition)
+    //console.log('cursor position', cursorPosition)
   };
 
-  const handleChangeText = (e) => {
-
-  }
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // logic for submit re-render of text box
-    // send props.text to back end
-    console.log('text:', props.text);
-
-  };
+    e.preventDefault()
+    props.handleText()
+  }
 
   return (
     <Main>
       <Button onClick={props.handleLogin}>sign out</Button>
-      <Form autocomplete="off">
+      <Form autocomplete="off" onSubmit={handleSubmit}>
         <Input
-          name="xyz123"
+          name="userInput"
           id="xyz123"
+
+          // for now we should focus on using save btn rather than
+          // resetting state in a component
+
           onChange={(e) => {
             props.setText(e.target.value);
-            console.log(props.text)
+            console.log('this is text from state in on change:', props.text)
             handleCursor(e);
           }}
           onClick={handleCursor}
           onKeyDown={handleCursor}
-          defaultValue={props.text}
+          value={props.text}
           type="text"
           placeholder="say hello..."
           autocomplete="xyz123"
         ></Input>
-        <Button type="submit" onClick={handleSubmit}>
-          submit
+        <Button type="submit">
+          save
         </Button>
       </Form>
     </Main>

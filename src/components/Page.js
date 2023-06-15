@@ -1,66 +1,71 @@
 import React, {useState, useEffect} from 'react'
 import Login from './Login';
 import EditorContainer from './EditorContainer'
-
 import { socket } from '../socket';
-import { ConnectionState } from './ConnectionState';
-import { ConnectionManager } from './ConnectionManager';
-import { Events } from './Events';
-import { MyForm } from './MyForm';
 
 export default function Page () {
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [fooEvents, setFooEvents] = useState([]);
-
-  const [createButtonPress, setCreateButtonPress] = useState(false)
-  const [createJoinPress, setCreateJoinPress] = useState(false)
   const [loggedIn, setIsLoggedIn] = useState(false)
   const [text, setText] = useState("")
   const [password, setPassword] = useState("")
-  const handleLogin = () => setIsLoggedIn((current) => !current)
-  
-  
+
+  //handles creating a room
+  const handleCreateRoom = () => {
+    setIsLoggedIn((current) => !current)
+    socket.emit('create room')
+    socket.on('get password', (pass) => {
+      setPassword(pass)
+      socket.emit('join room', pass)  // join the room after setting the password
+    })
+  }
+
+
+  //join room handler
+  const handleJoinRoom = () => {
+    setIsLoggedIn((current) => !current) // user is now logged in so we re-render
+    //console.log('password in handlejoin', password)
+    socket.emit('join room', password)
+    socket.on('document', (...data) => 
+    {
+    console.log("Document:", data[1])
+    setText(data[1]) // sets text to repopulate text editor
+    })
+
+  }
+
+
+  const handleText = () => {
+    // after editing text and resetting state to hold new text:
+    //setText(updated)
+    console.log('inside handle text')
+    console.log('this is text: ', text)
+    socket.emit('document change', password, text)
+  }
 
   useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-    }
+  
+    
+    socket.on('get updates', (text) => {
+      console.log('in get updates client side')
+      console.log('text in get uopdates client side: ', text)
+      setText(text)
+      console.log('this is newwwww text: ', text)
+    })
 
-    function onDisconnect() {
-      setIsConnected(false);
-      // if we are disconnecting our last connection there will be no way to save the current text 
-      // data to our db
-      //
-      // setInterval? or just every time the data is manipulated
-    }
-
-    function onFooEvent(value) {
-      setFooEvents(previous => [...previous, value]);
-    }
-
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.on('foo', onFooEvent);
-
-    return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('foo', onFooEvent);
-    };
-  }, []);
+  
+    // Cleanup function to avoid memory leaks
+    return () => socket.off('get updates', updateText)
+  }, [])
+  //changes password state
+  const passwordHandler = (value) => {
+    setPassword(value)
+  }
 
   return (
     <section>
-
-      <ConnectionState isConnected={ isConnected } />
-      <Events events={ fooEvents } />
-      <ConnectionManager />
-      <MyForm />
-
-
+      password: <input defaultValue = {password} onChange={(e) => passwordHandler(e.target.value)}></input>
       <div>{loggedIn ? <div className='bg-green-200'>currently in a room!</div> : <div className='bg-red-200'>not in room</div>}</div>
-      { !loggedIn? <Login handleLogin={handleLogin} text={text} password={password}/> : 
-      <EditorContainer text={text} setText={setText} password={password} setPassword={setPassword} handleLogin={handleLogin}/> }
+      { !loggedIn? <Login handleJoinRoom={handleJoinRoom} handleCreateRoom={handleCreateRoom} password={password}/> : 
+      <EditorContainer text={text} handleText={handleText} setText={setText} password={password} handleCreateRoom={handleCreateRoom}/> }
     </section>
   )
 }

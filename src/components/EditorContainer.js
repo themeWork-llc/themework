@@ -1,3 +1,4 @@
+import e from 'cors';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -54,9 +55,16 @@ export default function EditorContainer(props) {
     //console.log('cursor position', cursorPosition)
   };
 
-  const handleSubmit = () => {
-    console.log('in handlesubmit', props.text)
-    props.handleText()
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch('/rooms', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password: props.password,
+        text: props.text
+      })
+    });
   }
 
   useEffect(() => {
@@ -88,7 +96,7 @@ export default function EditorContainer(props) {
           placeholder="say hello..."
           autocomplete="xyz123"
         ></Input>
-        <Button>
+        <Button onClick={handleSubmit}>
           save
         </Button>
       </Form>

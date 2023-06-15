@@ -29,18 +29,19 @@ app.use(express.json())
 // need CORS for connection
 app.use(cors());
 
-// test route to create a room in the database - sun jin
-app.post('/rooms', async (req, res) => {
+// creates a new room or updates an existing room
+app.patch('/rooms', async (req, res) => {
     try {
       const { password, text } = req.body;
-      const room = new Room({ password, text });
+      let room = await Room.findOne({ password });
+      !room ? room = new Room({ password, text }) : room.text = text;
       await room.save();
-      res.status(201).json(room);
+      res.status(200).json(room);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Failed to create room' });
+      res.status(500).json({ error: 'Failed to update/create room' });
     }
-});
+  });
 
 
 //sets up a socket.io connection

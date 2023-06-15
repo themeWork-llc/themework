@@ -6,15 +6,12 @@ const mongoose = require ('mongoose');
 require('dotenv').config()
 const { Room } = require('./models/models.js')
 const path = require('path')
-const bodyParser = require('body-parser')
-
-
+const redis = require('./redis.js')
 const cors = require('cors');
 const app = express();
 
 //create server
 const server = http.createServer(app)
-
 const PORT = 3000
 
 //connect to mongoDB 
@@ -23,10 +20,6 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err) => console.log(err));
 
 app.use(express.json())
-//on initial load send the html/react page
-
-// app.use(bodyParser.json())
-// need CORS for connection
 app.use(cors());
 
 // test route to create a room in the database - sun jin
@@ -78,13 +71,15 @@ io.on('connection', client => {
         
         console.log(`room has been created with password: ${randomPassword}`);
         //send text 
-        
+
         client.emit('get password', randomPassword)
     })
     
     //when a client joins a room
     client.on('join room', (password) => {
-        
+        // get values from cache if exist
+        redis.getText(password)
+
         console.log("in join room on server")
         console.log('PASSWORD in server:', password)
         console.log('object on server:', roomPasswords)
@@ -115,6 +110,10 @@ io.on('connection', client => {
         roomPasswords[password] = updatedText
         console.log('object in server after getting new text', roomPasswords)
         client.in(password).emit('get updates', roomPasswords[password])
+
+        // update cached text
+        redis.setText(password, updatedText)
+
     })
     //on disconnect
     io.on('disconnect', () => {

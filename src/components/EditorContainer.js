@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Main = styled.main`
@@ -59,6 +59,11 @@ export default function EditorContainer(props) {
     props.handleText()
   }
 
+  useEffect(() => {
+    console.log('in handlesubmit', props.text);
+    props.handleText();
+  }, [props.text]);
+
   return (
     <Main>
       <Button onClick={props.handleLogin}>sign out</Button>
@@ -73,7 +78,7 @@ export default function EditorContainer(props) {
           onChange={(e) => {
             props.setText(e.target.value);
             console.log('this is text from state in on change:', props.text)
-            handleSubmit()
+            // handleSubmit()
             //handleCursor(e);
           }}
           onClick={handleCursor}

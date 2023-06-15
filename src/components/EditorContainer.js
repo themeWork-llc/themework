@@ -1,6 +1,6 @@
-import e from 'cors';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import '../app.css'
 
 const Main = styled.main`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
@@ -26,14 +26,15 @@ const Form = styled.form`
   align-items: center;
 `;
 
-const Input = styled.input`
+const TextArea = styled.textarea`
   font-size: 1em;
+  color: black;
   padding: 0.5em;
-  border: 3px solid black;
-  border-radius: 3px;
+  border-radius: 10px;
   margin-bottom: 1em;
-  width: 70%;
-  height: 60vh;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  width: 80%;
+  height: 80vh;
   box-sizing: border-box;
   background-color: #fafafa;
   resize: none;
@@ -48,13 +49,19 @@ const Input = styled.input`
 
 export default function EditorContainer(props) {
 
-  const [cursorPosition, setCursorPosition] = useState(null);
+  // const [cursorPosition, setCursorPosition] = useState(null);
 
-  const handleCursor = (e) => {
-    setCursorPosition(e.target.selectionStart);
-    //console.log('cursor position', cursorPosition)
-  };
+  // const handleCursor = (e) => {
+  //   setCursorPosition(e.target.selectionStart);
+  //   //console.log('cursor position', cursorPosition)
+  // };
 
+  // const handleSubmit = () => {
+  //   console.log('in handlesubmit', props.text)
+  //   props.handleText()
+  // }
+
+  const ref = useRef(false)
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch('/rooms', {
@@ -68,7 +75,11 @@ export default function EditorContainer(props) {
   }
 
   useEffect(() => {
-    console.log('in handlesubmit', props.text);
+    if(ref.current === false){
+      ref.current = true;
+      return;
+    }
+    //console.log('in handlesubmit', props.text);
     props.handleText();
   }, [props.text]);
 
@@ -76,26 +87,27 @@ export default function EditorContainer(props) {
     <Main>
       <Button onClick={props.handleLogin}>sign out</Button>
       <Form autocomplete="off" >
-        <Input
+        <TextArea
           name="userInput"
           id="xyz123"
+          className='input-container'
 
           // for now we should focus on using save btn rather than
           // resetting state in a component
 
           onChange={(e) => {
             props.setText(e.target.value);
-            console.log('this is text from state in on change:', props.text)
+            //console.log('this is text from state in on change:', props.text)
             // handleSubmit()
             //handleCursor(e);
           }}
-          onClick={handleCursor}
-          onKeyDown={handleCursor}
+          // onClick={handleCursor}
+          // onKeyDown={handleCursor}
           value={props.text}
-          type="text"
+          type="textarea"
           placeholder="say hello..."
           autocomplete="xyz123"
-        ></Input>
+        ></TextArea>
         <Button onClick={handleSubmit}>
           save
         </Button>

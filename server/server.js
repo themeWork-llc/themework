@@ -30,17 +30,17 @@ app.use(express.json())
 app.use(cors());
 
 // test route to create a room in the database - sun jin
-// app.post('/rooms', async (req, res) => {
-//     try {
-//       const { password, text } = req.body;
-//       const room = new Room({ password, text });
-//       await room.save();
-//       res.status(201).json(room);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: 'Failed to create room' });
-//     }
-//   });
+app.post('/rooms', async (req, res) => {
+    try {
+      const { password, text } = req.body;
+      const room = new Room({ password, text });
+      await room.save();
+      res.status(201).json(room);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to create room' });
+    }
+});
 
 
 //sets up a socket.io connection

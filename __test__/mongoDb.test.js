@@ -3,6 +3,7 @@ global.TextEncoder = require('util').TextEncoder;
 const { MongoClient } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
+// testing mongoDB
 describe('insert', () => {
   let connection;
   let db;

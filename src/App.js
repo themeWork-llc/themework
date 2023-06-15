@@ -5,7 +5,7 @@ import Page from './components/Page';
 const App = () => {
   return(
   <main>
-    <h1 className="text-secondary italic text-5xl font-extrabold text-center mt-10">themeWork</h1>
+    <h1 className="italic text-5xl font-extrabold text-center mt-10" style={{fontFamily: 'sans', fontWeight: '200', color:'#CE0000'}}>theme<span className='not-italic' style={{color:'#000063 '}}>Work</span></h1>
     <Page />
   </main>)
 }

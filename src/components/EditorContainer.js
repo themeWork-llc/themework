@@ -5,8 +5,8 @@ import '../app.css'
 const Main = styled.main`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: #fafafa;
   padding: 20px;
+  width: 1100px;
 `;
 
 const Button = styled.button`
@@ -17,7 +17,7 @@ const Button = styled.button`
   color: #fff;
   background-color: #1687a7;
   border: none;
-  cursor: pointer;
+  cursor: default;
 `;
 
 const Form = styled.form`
@@ -32,6 +32,7 @@ const TextArea = styled.textarea`
   padding: 0.5em;
   border-radius: 10px;
   margin-bottom: 1em;
+  margin-top: 10px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   width: 80%;
   height: 80vh;
@@ -85,7 +86,7 @@ export default function EditorContainer(props) {
 
   return (
     <Main>
-      <Button onClick={props.handleLogin}>sign out</Button>
+      <div className='pass' onClick={props.handleLogin}>Room Key: {props.password}</div>
       <Form autocomplete="off" >
         <TextArea
           name="userInput"

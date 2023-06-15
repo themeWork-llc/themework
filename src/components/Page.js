@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Login from './Login';
 import EditorContainer from './EditorContainer'
 import { socket } from '../socket';
+import '../app.css'
 
 export default function Page () {
   const [loggedIn, setIsLoggedIn] = useState(false)
@@ -61,10 +62,12 @@ export default function Page () {
   }
 
   return (
-    <section>
-      password: <input defaultValue = {password} onChange={(e) => passwordHandler(e.target.value)}></input>
-      <div>{loggedIn ? <div className='bg-green-200'>currently in a room!</div> : <div className='bg-red-200'>not in room</div>}</div>
+    <section className='nav'>
+      <div>{loggedIn ? <div className='bg-green-200 h-0.5 mt-10'></div> : <div className='bg-red-200 h-0.5 mt-10'></div>}</div>
+      
+      <input className='w-25 bg-cyan-100' placeholder='Room Key' style={{fontFamily:'sans', fontWeight:'200', paddingLeft:'5px', borderRadius: '3px', backgroundColor: 'rgb(232,232,232)', width:'135px', height:'28px'}}defaultValue = {password} onChange={(e) => passwordHandler(e.target.value)}></input>
       { !loggedIn? <Login handleJoinRoom={handleJoinRoom} handleCreateRoom={handleCreateRoom} password={password}/> : 
+      
       <EditorContainer text={text} handleText={handleText} setText={setText} password={password} handleCreateRoom={handleCreateRoom}/> }
     </section>
   )

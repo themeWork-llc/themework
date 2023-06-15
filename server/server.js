@@ -7,7 +7,12 @@ require('dotenv').config()
 const { Room } = require('./models/models.js')
 const path = require('path')
 const bodyParser = require('body-parser')
+const redis = require('./redis.js')
 
+const password = 'hello'
+const text = 'world'
+redis.setText(password, text)
+redis.getText(password)
 
 const cors = require('cors');
 const app = express();

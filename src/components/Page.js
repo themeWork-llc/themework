@@ -61,10 +61,12 @@ export default function Page () {
   }
 
   return (
-    <section>
-      password: <input defaultValue = {password} onChange={(e) => passwordHandler(e.target.value)}></input>
-      <div>{loggedIn ? <div className='bg-green-200'>currently in a room!</div> : <div className='bg-red-200'>not in room</div>}</div>
+    <section className='italic'>
+      <div>{loggedIn ? <div className='bg-green-200 h-0.5 mt-10'></div> : <div className='bg-red-200 h-0.5 mt-10'></div>}</div>
+      
+      copy/paste password: <input className='w-20 bg-transparent' defaultValue = {password} onChange={(e) => passwordHandler(e.target.value)}></input>
       { !loggedIn? <Login handleJoinRoom={handleJoinRoom} handleCreateRoom={handleCreateRoom} password={password}/> : 
+      
       <EditorContainer text={text} handleText={handleText} setText={setText} password={password} handleCreateRoom={handleCreateRoom}/> }
     </section>
   )

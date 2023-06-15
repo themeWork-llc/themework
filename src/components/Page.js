@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Login from './Login';
 import EditorContainer from './EditorContainer'
 import { socket } from '../socket';
@@ -10,9 +10,12 @@ export default function Page () {
 
   //handles creating a room
   const handleCreateRoom = () => {
-    setIsLoggedIn((current) => !current) // user is now logged in so we re-render
+    setIsLoggedIn((current) => !current)
     socket.emit('create room')
-    socket.on('get password', (pass) => setPassword(pass)) // sets pw for new room
+    socket.on('get password', (pass) => {
+      setPassword(pass)
+      socket.emit('join room', pass)  // join the room after setting the password
+    })
   }
 
 
@@ -38,11 +41,20 @@ export default function Page () {
     socket.emit('document change', password, text)
   }
 
-  socket.on('get updates', (text) => {
-    console.log('in get updates,', text)
-    setText(text)
-  })
+  useEffect(() => {
+  
+    
+    socket.on('get updates', (text) => {
+      console.log('in get updates client side')
+      console.log('text in get uopdates client side: ', text)
+      setText(text)
+      console.log('this is newwwww text: ', text)
+    })
 
+  
+    // Cleanup function to avoid memory leaks
+    return () => socket.off('get updates', updateText)
+  }, [])
   //changes password state
   const passwordHandler = (value) => {
     setPassword(value)

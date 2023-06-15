@@ -75,8 +75,10 @@ io.on('connection', client => {
         // let randomPassword = 'randomPassword';
         //store random password in object
         roomPasswords[randomPassword] = '';
+        
         console.log(`room has been created with password: ${randomPassword}`);
         //send text 
+        
         client.emit('get password', randomPassword)
     })
     
@@ -112,7 +114,7 @@ io.on('connection', client => {
         console.log('object in server before getting new text', roomPasswords)
         roomPasswords[password] = updatedText
         console.log('object in server after getting new text', roomPasswords)
-        io.in(password).emit('get updates', updatedText)
+        client.in(password).emit('get updates', roomPasswords[password])
     })
     //on disconnect
     io.on('disconnect', () => {

@@ -77,7 +77,7 @@ export default function EditorContainer(props) {
           }}
           onClick={handleCursor}
           onKeyDown={handleCursor}
-          defaultValue={props.text}
+          value={props.text}
           type="text"
           placeholder="say hello..."
           autocomplete="xyz123"

@@ -62,6 +62,17 @@ export default function EditorContainer(props) {
   // }
 
   const ref = useRef(false)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch('/rooms', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password: props.password,
+        text: props.text
+      })
+    });
+  }
 
   useEffect(() => {
     if(ref.current === false){
@@ -97,7 +108,7 @@ export default function EditorContainer(props) {
           placeholder="say hello..."
           autocomplete="xyz123"
         ></TextArea>
-        <Button>
+        <Button onClick={handleSubmit}>
           save
         </Button>
       </Form>

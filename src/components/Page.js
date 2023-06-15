@@ -26,7 +26,7 @@ export default function Page () {
     socket.emit('join room', password)
     socket.on('document', (...data) => 
     {
-    console.log("Document:", data[1])
+    //console.log("Document:", data[1])
     setText(data[1]) // sets text to repopulate text editor
     })
 
@@ -36,8 +36,8 @@ export default function Page () {
   const handleText = () => {
     // after editing text and resetting state to hold new text:
     //setText(updated)
-    console.log('inside handle text')
-    console.log('this is text: ', text)
+    //console.log('inside handle text')
+    //console.log('this is text: ', text)
     socket.emit('document change', password, text)
   }
 
@@ -45,10 +45,10 @@ export default function Page () {
   
     
     socket.on('get updates', (text) => {
-      console.log('in get updates client side')
-      console.log('text in get uopdates client side: ', text)
+      //console.log('in get updates client side')
+      //console.log('text in get uopdates client side: ', text)
       setText(text)
-      console.log('this is newwwww text: ', text)
+      //console.log('this is newwwww text: ', text)
     })
 
   

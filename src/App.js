@@ -5,7 +5,7 @@ import Page from './components/Page';
 const App = () => {
   return(
   <main>
-    <h1 className="text-primary text-5xl font-bold">themeWork</h1>
+    <h1 className="text-primary text-5xl font-bold ">themeWork</h1>
     <Page />
   </main>)
 }

@@ -54,15 +54,15 @@ export default function EditorContainer(props) {
     //console.log('cursor position', cursorPosition)
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = () => {
+    console.log('in handlesubmit', props.text)
     props.handleText()
   }
 
   return (
     <Main>
       <Button onClick={props.handleLogin}>sign out</Button>
-      <Form autocomplete="off" onSubmit={handleSubmit}>
+      <Form autocomplete="off" >
         <Input
           name="userInput"
           id="xyz123"
@@ -73,7 +73,8 @@ export default function EditorContainer(props) {
           onChange={(e) => {
             props.setText(e.target.value);
             console.log('this is text from state in on change:', props.text)
-            handleCursor(e);
+            handleSubmit()
+            //handleCursor(e);
           }}
           onClick={handleCursor}
           onKeyDown={handleCursor}
@@ -82,7 +83,7 @@ export default function EditorContainer(props) {
           placeholder="say hello..."
           autocomplete="xyz123"
         ></Input>
-        <Button type="submit">
+        <Button>
           save
         </Button>
       </Form>

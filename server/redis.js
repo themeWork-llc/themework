@@ -8,11 +8,13 @@ module.exports = {
   setText: async (password, text) => {
   await client.set(`${password}`, `${text}`);
   const cachedText = await client.get(`${password}`)
-  console.log('stored text: ', cachedText)
+  console.log('successfully updated cached text to: ', cachedText)
+  return cachedText;
   },
 
   getText: async (password) => {
     const cachedText = await client.get(`${password}`)
-    console.log('cached text: ', cachedText)
+    console.log('retrieved cached text: ', cachedText)
+    return cachedText;
   }
 };

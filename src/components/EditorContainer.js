@@ -109,10 +109,15 @@ export default function EditorContainer(props) {
           placeholder="say hello..."
           autocomplete="xyz123"
         ></TextArea>
-        <Button onClick={handleSubmit}>
+        <button className='bg-transparent hover:bg-red-500 hover:text-white text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center' onClick={handleSubmit}>
+          <svg className="text-black dark:text-white pr-3" xmlns="http://www.w3.org/2000/svg" width="28px" height="28px" viewBox="0 0 407.10 407.10">
+            <path className="text-black dark:text-white" d="M402.115,84.008L323.088,4.981C319.899,1.792,315.574,0,311.063,0H17.005C7.613,0,0,7.614,0,17.005v373.086c0,9.392,7.613,17.005,17.005,17.005h373.086c9.392,0,17.005-7.613,17.005-17.005V96.032C407.096,91.523,405.305,87.197,402.115,84.008z M300.664,163.567H67.129V38.862h233.535V163.567z"/>
+            <path className="text-black dark:text-white" d="M214.051,148.16h43.08c3.131,0,5.668-2.538,5.668-5.669V59.584c0-3.13-2.537-5.668-5.668-5.668h-43.08c-3.131,0-5.668,2.538-5.668,5.668v82.907C208.383,145.622,210.92,148.16,214.051,148.16z"/>
+          </svg>
           save
-        </Button>
+        </button>
       </Form>
     </Main>
   );
 }
+    

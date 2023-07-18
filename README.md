@@ -1,6 +1,5 @@
 # themeWork: work on your text documents - together!
-![Screen Shot 2023-06-15 at 9 42 53 AM](https://github.com/themeWork-llc/themework/assets/97624308/a8e9bee2-ef21-472c-8155-61e073f4883c)
-
+![themeWork](https://github.com/themeWork-llc/themework/assets/103064256/0add06b2-2654-478f-ac55-cac18d13ec71)
 
 ## Quick Start
 

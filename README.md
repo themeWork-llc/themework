@@ -1,5 +1,7 @@
-# themeWork: work on your text documents - together!
+# themeWork: Work on your text documents - together!
 ![themeWork](https://github.com/themeWork-llc/themework/assets/103064256/0add06b2-2654-478f-ac55-cac18d13ec71)
+
+![themeWork2](https://github.com/themeWork-llc/themework/assets/103064256/72c3c3d7-19b5-4808-8d18-5ea584276623)
 
 ## Quick Start
 
